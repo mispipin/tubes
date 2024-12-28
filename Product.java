@@ -22,9 +22,9 @@ abstract class Product implements IManageable {
 
     @Override
     public void read() {
-        System.out.println("Product ID: " + productId);
-        System.out.println("Name: " + name);
-        System.out.println("Price: Rp" + price);  // Ganti dengan format Rupiah
-        System.out.println("Quantity: " + quantity);
+        System.out.println("ID Produk: " + productId);
+        System.out.println("Nama: " + name);
+        System.out.println("Harga: Rp" + String.format("%.2f", price));
+        System.out.println("Jumlah: " + quantity);
     }
 }
