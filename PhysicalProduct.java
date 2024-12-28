@@ -23,16 +23,17 @@ class PhysicalProduct extends Product {
 
     @Override
     public void create() {
-        System.out.println("Creating physical product");
+        System.out.println("Menciptakan produk fisik");
     }
 
     @Override
     public void update() {
-        System.out.println("Updating physical product");
+        System.out.println("Memperbarui produk fisik");
     }
 
     @Override
     public void delete() {
-        System.out.println("Deleting physical product");
+        System.out.println("Menghapus produk fisik");
     }
 }
+
