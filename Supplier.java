@@ -14,6 +14,6 @@ class Supplier {
     private String contactInfo;
 
     public void provideProduct(Product product) {
-        System.out.println("Supplier providing product: " + product.name);
+        System.out.println("Supplier menyediakan produk: " + product.name);
     }
 }
