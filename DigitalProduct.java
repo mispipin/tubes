@@ -23,16 +23,16 @@ class DigitalProduct extends Product {
 
     @Override
     public void create() {
-        System.out.println("Creating digital product");
+        System.out.println("Membuat produk digital");
     }
 
     @Override
     public void update() {
-        System.out.println("Updating digital product");
+        System.out.println("Memperbarui produk digital");
     }
 
     @Override
     public void delete() {
-        System.out.println("Deleting digital product");
+        System.out.println("Menghapus produk digital");
     }
 }
