@@ -11,11 +11,11 @@ package com.mycompany.tugas_besar;
 class PurchaseOrder extends Order {
     @Override
     public void createOrder() {
-        System.out.println("Creating purchase order");
+        System.out.println("Membuat pesanan pembelian");
     }
 
     @Override
     public void updateOrder() {
-        System.out.println("Updating purchase order");
+        System.out.println("Memperbarui pesanan pembelian");
     }
 }
