@@ -11,14 +11,14 @@ package com.mycompany.tugas_besar;
 class Manager extends Staff {
     @Override
     public void manageStock() {
-        System.out.println("Managing stock as manager");
+        System.out.println("Mengelola stok sebagai manajer");
     }
 
     public void generateReport() {
-        System.out.println("Generating report...");
+        System.out.println("Membuat laporan...");
     }
 
     public void manageStaff() {
-        System.out.println("Managing staff...");
+        System.out.println("Mengelola staf...");
     }
 }
