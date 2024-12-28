@@ -11,14 +11,15 @@ package com.mycompany.tugas_besar;
 class WarehouseWorker extends Staff {
     @Override
     public void manageStock() {
-        System.out.println("Managing stock as warehouse worker");
+        System.out.println("Mengelola stok sebagai pekerja gudang");
     }
 
     public void retrieveProduct() {
-        System.out.println("Retrieving product...");
+        System.out.println("Mengambil produk...");
     }
 
     public void storeProduct() {
-        System.out.println("Storing product...");
+        System.out.println("Menyimpan produk...");
     }
 }
+
