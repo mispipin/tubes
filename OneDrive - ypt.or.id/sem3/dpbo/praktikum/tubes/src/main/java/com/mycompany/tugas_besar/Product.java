@@ -39,4 +39,8 @@ abstract class Product implements IManageable {
         this.quantity = quantity;
     }
     
+    @Override
+    public String toString() {
+        return "ID: " + productId + ", Nama: " + name + ", Harga: " + price + ", Jumlah: " + quantity;
+    }
 }

@@ -50,32 +50,85 @@ public class Main {
 
                 switch (choice) {
                     case 1 -> {
+                       System.out.println("Kategori yang tersedia:");
+                        // Menampilkan daftar kategori
+                        for (Category category : inventory.getCategories()) {
+                            System.out.println("- ID: " + category.getCategoryId() + ", Nama: " + category.getName());
+                        }
                         System.out.print("Masukkan ID Kategori: ");
-                    String categoryId = scanner.nextLine();
+                        String categoryId = scanner.nextLine();
 
-                    if (categories.containsKey(categoryId)) {
-                        // Masukkan detail produk
-                        System.out.print("Masukkan ID Produk: ");
-                        String id = scanner.nextLine();
-                        System.out.print("Masukkan Nama Produk: ");
-                        String name = scanner.nextLine();
-                        System.out.print("Masukkan Harga: ");
-                        double price = scanner.nextDouble();
-                        System.out.print("Masukkan Jumlah: ");
-                        int quantity = scanner.nextInt();
-                        scanner.nextLine(); // Menghapus newline dari input buffer
+                        // Cek apakah kategori ada
+                        Category selectedCategory = null;
+                        for (Category category : inventory.getCategories()) {
+                            if (category.getCategoryId().equals(categoryId)) {
+                                selectedCategory = category;
+                                break;
+                            }
+                        }
 
-                        // Membuat produk
-                        PhysicalProduct product = new PhysicalProduct(id, name, price, quantity);
+                        if (selectedCategory == null) {
+                            System.out.println("Kategori tidak ditemukan.");
+                        } else {
+                            // Masukkan detail produk
+                            System.out.print("Masukkan ID Produk: ");
+                            String id = scanner.nextLine();
+                            System.out.print("Masukkan Nama Produk: ");
+                            String name = scanner.nextLine();
 
-                        // Menambahkan produk ke kategori
-                        categories.get(categoryId).addProduct(product);
-                        
-                        inventory.addProduct(product);
-                    } else {
-                        System.out.println("Kategori tidak ditemukan.");
-                    }
-                    break;
+                            double price = 0.0;
+                            int quantity = 0;
+
+                            // Validasi input harga
+                            while (true) {
+                                try {
+                                    System.out.print("Masukkan Harga: ");
+                                    price = Double.parseDouble(scanner.nextLine());
+                                    if (price <= 0) throw new IllegalArgumentException("Harga harus lebih besar dari 0.");
+                                    break;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Input tidak valid! Harga harus berupa angka.");
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+
+                            // Validasi input jumlah
+                            while (true) {
+                                try {
+                                    System.out.print("Masukkan Jumlah: ");
+                                    quantity = Integer.parseInt(scanner.nextLine());
+                                    if (quantity < 0) throw new IllegalArgumentException("Jumlah tidak boleh negatif.");
+                                    break;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Input tidak valid! Jumlah harus berupa angka bulat.");
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+
+                            // Tanyakan apakah produk fisik atau digital
+                            System.out.print("Jenis produk (1 untuk Fisik, 2 untuk Digital): ");
+                            int productType = scanner.nextInt();
+                            scanner.nextLine();  // Menghapus newline
+
+                            if (productType == 1) {
+                                // Membuat produk fisik
+                                PhysicalProduct physicalProduct = new PhysicalProduct(id, name, price, quantity);
+                                selectedCategory.addProduct(physicalProduct);
+                                inventory.addProduct(physicalProduct);
+                                System.out.println("Produk fisik berhasil ditambahkan.");
+                            } else if (productType == 2) {
+                                // Membuat produk digital
+                                DigitalProduct digitalProduct = new DigitalProduct(id, name, price, quantity);
+                                selectedCategory.addProduct(digitalProduct);
+                                inventory.addProduct(digitalProduct);
+                                System.out.println("Produk digital berhasil ditambahkan.");
+                            } else {
+                                System.out.println("Pilihan tidak valid.");
+                            }
+                        }
+                        break;
                     }
                     case 2 -> inventory.displayProducts();
                     case 3 -> {
@@ -278,7 +331,10 @@ public class Main {
                                     String status = scanner.nextLine();
                                     order.setStatus(status);
                                 }
-                                case 6 -> ordering = false;
+                                case 6 -> {
+                                    order.printOrderSummary();
+                                    ordering = false;
+                                }
                                 default -> System.out.println("Opsi tidak valid.");
                             }
                         }

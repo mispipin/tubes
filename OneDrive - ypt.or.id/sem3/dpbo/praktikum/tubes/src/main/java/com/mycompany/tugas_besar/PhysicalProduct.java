@@ -41,4 +41,10 @@ class PhysicalProduct extends Product {
     public PhysicalProduct(String productId, String name, double price, int quantity) {
         super(productId, name, price, quantity);
     }
+    
+    @Override
+    public String toString() {
+        return super.toString() + " (Fisik)";
+    }
+
 }
