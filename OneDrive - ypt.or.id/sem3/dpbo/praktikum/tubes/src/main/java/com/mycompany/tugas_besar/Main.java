@@ -22,11 +22,13 @@ public class Main {
             books.addProduct(eBook);
             inventory.addProduct(eBook);
 
-            // Menambahkan staf
-            Staff manager = new Manager();
-            Staff warehouseWorker = new WarehouseWorker();
+   
             
             Map<String, Category> categories = new HashMap<>();
+            Map<String, Order> orders = new HashMap<>(); // Menyimpan pesanan
+            Map<String, Staff> staffDirectory = new HashMap<>();
+
+
 
             while (running) {
                 System.out.println("===== ITProcure =====");
@@ -191,63 +193,107 @@ public class Main {
                         String categoryId = scanner.nextLine();
                         System.out.print("Masukkan Nama Kategori: ");
                         String categoryName = scanner.nextLine();
-                        categories.put(categoryId, new Category(categoryId, categoryName));
-                        System.out.println("Kategori berhasil ditambahkan!");
-                    break;
+
+                        // Buat kategori baru dan tambahkan ke inventori
+                        Category newCategory = new Category(categoryId, categoryName);
+                        inventory.addCategory(newCategory);
+
+                        System.out.println("Kategori \"" + categoryName + "\" berhasil ditambahkan.");
+                        break;
                     }
-                    case 7 -> inventory.displayCategories();
-                    case 56 -> {
-                        System.out.print("Masukkan diskon (misalkan, 0,1 untuk 10%): ");
-                        double discountRate = scanner.nextDouble();
-                        inventory.applyGlobalDiscount(discountRate);
+                    case 7 -> {
+                        System.out.println("Daftar Kategori dan Produknya:");
+                        if (inventory.getCategories().isEmpty()) {
+                            System.out.println("Tidak ada kategori yang tersedia.");
+                        } else {
+                            for (Category category : inventory.getCategories()) {
+                                System.out.println("\nKategori: " + category.getName());
+                                List<Product> products = category.getProducts();
+                                if (products.isEmpty()) {
+                                    System.out.println("  Tidak ada produk dalam kategori ini.");
+                                } else {
+                                    for (Product product : products) {
+                                        System.out.println("  - ID: " + product.productId + ", Nama: " + product.name +
+                                                           ", Harga: " + product.price + ", Jumlah: " + product.quantity);
+                                    }
+                                }
+                            }
+                        }
+                        break;
                     }
                     case 8 -> 
                     {
-                        System.out.print("Masukkan ID Pesanan: ");
-                        String orderId = scanner.nextLine();
-                        System.out.print("Masukkan Total Jumlah: ");
-                        double totalAmount = scanner.nextDouble();
-                        PurchaseOrder purchaseOrder = new PurchaseOrder();
-                        purchaseOrder.orderId = orderId;
-                        purchaseOrder.totalAmount = totalAmount;
-                        purchaseOrder.createOrder();
-                    }
-                    case 9 -> {
-                        System.out.println("1. Kelola Stok (Manajer)");
-                        System.out.println("2. Ambil Produk (Pekerja Gudang)");
-                        System.out.print("Pilih opsi: ");
-                        int staffChoice = scanner.nextInt();
-                        scanner.nextLine();
-                        switch (staffChoice) {
-                            case 1 -> manager.manageStock();
-                            case 2 -> warehouseWorker.retrieveProduct();
-                            default -> System.out.println("Opsi tidak valid.");
-                        }
-                    }
-                    case 10 -> {
-                        Shipment shipment = new Shipment();
-                        System.out.print("Masukkan ID Pengiriman: ");
-                        String shipmentId = scanner.nextLine();
-                        System.out.print("Masukkan Alamat: ");
-                        String address = scanner.nextLine();
-                        System.out.print("Masukkan Status: ");
-                        String status = scanner.nextLine();
-                        System.out.println("Pengiriman dibuat dengan ID: " + shipmentId);
-                    }
-                    case 89 -> {
-                        System.out.print("Masukkan ID Produk untuk menghitung pajak: ");
-                        String productId = scanner.nextLine();
-                        for (Product product : inventory.products) {
-                            if (product.productId.equals(productId)) {
-                                Tax tax = new Tax();
-                                System.out.print("Masukkan tarif pajak (misalkan, 0,1 untuk 10%): ");
-                                tax.taxRate = scanner.nextDouble();
-                                double calculatedTax = tax.calculateTax(product);
-                                System.out.println("Pajak untuk produk " + product.name + ": Rp" + String.format("%.2f", calculatedTax));
-                                break;
+                       Order order = new Order(); // Membuat pesanan baru dengan kode unik
+                        orders.put(order.getOrderId(), order); // Simpan pesanan ke map
+
+                        System.out.println("Pesanan berhasil dibuat dengan Kode: " + order.getOrderId());
+
+                        boolean ordering = true;
+                        while (ordering) {
+                            System.out.println("\n===== Menu Pesanan =====");
+                            System.out.println("1. Tambah Produk ke Pesanan");
+                            System.out.println("2. Lihat Ringkasan Pesanan");
+                            System.out.println("3. Atur Diskon");
+                            System.out.println("4. Atur Pajak");
+                            System.out.println("5. Atur Status Pengiriman");
+                            System.out.println("6. Selesai");
+
+                            System.out.print("Pilih opsi: ");
+                            int pilih = scanner.nextInt();
+                            scanner.nextLine();
+
+                            switch (pilih) {
+                                case 1 -> {
+                                    System.out.println("Produk yang tersedia:");
+                                    inventory.displayProducts();
+
+                                    System.out.print("Masukkan ID produk: ");
+                                    String productId = scanner.nextLine();
+                                    Product product = inventory.getProductById(productId);
+
+                                    if (product == null) {
+                                        System.out.println("Produk tidak ditemukan.");
+                                        break;
+                                    }
+
+                                    System.out.print("Masukkan jumlah: ");
+                                    int quantity = scanner.nextInt();
+                                    scanner.nextLine();
+
+                                    order.addProduct(product, quantity);
+                                }
+                                case 2 -> order.printOrderSummary();
+                                case 3 -> {
+                                    System.out.print("Masukkan diskon (dalam persen): ");
+                                    double discount = scanner.nextDouble();
+                                    order.setDiscount(discount);
+                                }
+                                case 4 -> {
+                                    System.out.print("Masukkan pajak (dalam persen): ");
+                                    double tax = scanner.nextDouble();
+                                    order.setTax(tax);
+                                }
+                                case 5 -> {
+                                    System.out.print("Masukkan status pengiriman (Pending/Shipped/Delivered): ");
+                                    String status = scanner.nextLine();
+                                    order.setStatus(status);
+                                }
+                                case 6 -> ordering = false;
+                                default -> System.out.println("Opsi tidak valid.");
                             }
                         }
                     }
+                    case 9 -> StaffManagement.staffMenu(scanner);
+                    case 10 -> {
+                        System.out.print("Masukkan Kode Pesanan: ");
+                        String searchOrderId = scanner.nextLine();
+                        Order foundOrder = orders.get(searchOrderId);
+
+                        if (foundOrder != null) {
+                            foundOrder.printOrderSummary();
+                        } else {
+                            System.out.println("Pesanan dengan kode " + searchOrderId + " tidak ditemukan.");
+                        }}
                     case 0 -> {
                         System.out.println("Keluar dari ITProcure. Selamat tinggal!. Goodbye!");
                         running = false;

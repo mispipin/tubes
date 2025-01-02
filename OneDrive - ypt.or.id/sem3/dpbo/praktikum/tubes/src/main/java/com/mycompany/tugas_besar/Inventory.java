@@ -159,5 +159,13 @@ public class Inventory {
         }
     }
     
+    public Product getProductById(String productId) {
+    for (Product product : products) {
+        if (product.productId.equals(productId)) {
+            return product;
+        }
+    }
+    return null;
+}
 
 }

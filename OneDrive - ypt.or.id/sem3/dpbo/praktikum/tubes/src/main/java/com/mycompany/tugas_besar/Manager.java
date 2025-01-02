@@ -8,17 +8,13 @@ package com.mycompany.tugas_besar;
  *
  * @author LENOVO
  */
-class Manager extends Staff {
-    @Override
+public class Manager extends Staff {
+    public Manager(String name, String position) {
+        super(name, position, "Manager");
+    }
+
     public void manageStock() {
-        System.out.println("Mengelola stok sebagai manajer");
-    }
-
-    public void generateReport() {
-        System.out.println("Membuat laporan...");
-    }
-
-    public void manageStaff() {
-        System.out.println("Mengelola staf...");
+        System.out.println("Manager sedang mengelola stok...");
+        // Tambahkan logika pengelolaan stok
     }
 }

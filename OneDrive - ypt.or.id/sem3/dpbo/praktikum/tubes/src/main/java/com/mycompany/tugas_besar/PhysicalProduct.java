@@ -12,6 +12,8 @@ class PhysicalProduct extends Product {
     private double weight;
     private String dimensions;
 
+    
+
     @Override
     public void applyDiscount() {
         price *= 0.9; // 10% discount

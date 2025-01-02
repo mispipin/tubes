@@ -12,6 +12,8 @@ class DigitalProduct extends Product {
     private double fileSize;
     private String fileType;
 
+    
+
     @Override
     public void applyDiscount() {
         price *= 0.85; // 15% discount

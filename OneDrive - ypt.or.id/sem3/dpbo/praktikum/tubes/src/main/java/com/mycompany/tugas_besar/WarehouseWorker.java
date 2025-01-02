@@ -8,15 +8,13 @@ package com.mycompany.tugas_besar;
  *
  * @author LENOVO
  */
-class WarehouseWorker extends Staff {
-    @Override
-    public void manageStock() {
-        System.out.println("Mengelola stok sebagai pekerja gudang");
+public class WarehouseWorker extends Staff {
+    public WarehouseWorker(String name, String position) {
+        super(name, position, "Warehouse Worker");
     }
 
-
-
-    public void storeProduct() {
-        System.out.println("Menyimpan produk...");
+    public void retrieveProduct() {
+        System.out.println("Warehouse Worker sedang mengambil produk...");
+        // Tambahkan logika pengambilan produk
     }
 }

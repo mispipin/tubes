@@ -16,4 +16,8 @@ class Shipment {
     public String trackShipment() {
         return "Tracking shipment: " + shipmentId;
     }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
